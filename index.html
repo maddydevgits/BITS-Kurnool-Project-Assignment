@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <title>Internship Project PDF Download</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center px-4">
-  <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-lg">
-    <h1 class="text-2xl font-bold text-center mb-6 text-blue-700">Internship Project Assignment</h1>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-12">
+  <div class="bg-white p-6 sm:p-8 rounded-xl shadow-xl w-full max-w-xl">
+    <h1 class="text-xl sm:text-2xl font-bold text-center mb-6 text-blue-700">Internship Project PDF Download</h1>
 
     <label class="block mb-2 text-sm font-semibold">Select Stream</label>
     <select id="streamSelect" class="w-full p-3 border border-gray-300 rounded mb-4" onchange="resetSuggestions()">
@@ -30,7 +31,7 @@
 
     <button
       onclick="downloadPDF()"
-      class="w-full mt-4 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+      class="w-full mt-4 bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition"
     >
       Download PDF
     </button>
