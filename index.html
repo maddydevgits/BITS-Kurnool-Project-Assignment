@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Internship Project PDF Download</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center px-4">
+  <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-lg">
+    <h1 class="text-2xl font-bold text-center mb-6 text-blue-700">Internship Project Assignment</h1>
+
+    <label class="block mb-2 text-sm font-semibold">Select Stream</label>
+    <select id="streamSelect" class="w-full p-3 border border-gray-300 rounded mb-4" onchange="resetSuggestions()">
+      <option value="">-- Choose Stream --</option>
+      <option value="AI">AI</option>
+      <option value="FullStack">FullStack</option>
+      <option value="IoT">IoT</option>
+    </select>
+
+    <label class="block mb-2 text-sm font-semibold">Enter Team Name</label>
+    <input
+      id="teamInput"
+      type="text"
+      placeholder="e.g., CodeWave"
+      class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+      oninput="showSuggestions()"
+    />
+
+    <ul id="suggestions" class="border border-gray-300 rounded mt-1 hidden bg-white shadow-md max-h-40 overflow-auto z-10"></ul>
+
+    <button
+      onclick="downloadPDF()"
+      class="w-full mt-4 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+    >
+      Download PDF
+    </button>
+
+    <p id="errorMsg" class="text-red-600 text-center mt-4 hidden">PDF not found. Please check your stream and team name.</p>
+  </div>
+
+  <script>
+    const teamsByStream = {
+      AI: ["CodeWave", "NeoBots", "BinaryBlasters", "NullAndVoid"],
+      FullStack: ["MetaMorphers", "TechTitans", "CodeCommandos"],
+      IoT: [
+        "Access_Denied", "Binary_Brigade", "Bits_N_Bytes", "Boolean_Pundits", "Cloud_Chasers",
+        "Code_Dreamers", "Data_Defenders", "Digital_Dynamos", "Logic_Lords",
+        "Null_Pointers", "Syntax_Scholars", "Virus_Vixens", "Xcoders"
+      ]
+    };
+
+    function resetSuggestions() {
+      document.getElementById("teamInput").value = "";
+      document.getElementById("suggestions").classList.add("hidden");
+    }
+
+    function showSuggestions() {
+      const stream = document.getElementById("streamSelect").value;
+      const input = document.getElementById("teamInput").value.toLowerCase();
+      const suggestions = document.getElementById("suggestions");
+
+      if (!stream || !teamsByStream[stream]) {
+        suggestions.classList.add("hidden");
+        return;
+      }
+
+      const matches = teamsByStream[stream].filter(name =>
+        name.toLowerCase().includes(input)
+      );
+
+      if (matches.length === 0 || input === "") {
+        suggestions.classList.add("hidden");
+        return;
+      }
+
+      suggestions.innerHTML = matches
+        .map(name => `<li class="px-4 py-2 hover:bg-blue-100 cursor-pointer" onclick="selectTeam('${name}')">${name}</li>`)
+        .join("");
+      suggestions.classList.remove("hidden");
+    }
+
+    function selectTeam(name) {
+      document.getElementById("teamInput").value = name;
+      document.getElementById("suggestions").classList.add("hidden");
+    }
+
+    function downloadPDF() {
+      const stream = document.getElementById("streamSelect").value;
+      const team = document.getElementById("teamInput").value.trim();
+      const errorMsg = document.getElementById("errorMsg");
+
+      if (!stream || !team) {
+        errorMsg.classList.remove("hidden");
+        return;
+      }
+
+      const filename = `${team}_${stream}.pdf`;
+
+      fetch(filename)
+        .then(res => {
+          if (res.ok) {
+            errorMsg.classList.add("hidden");
+            const link = document.createElement("a");
+            link.href = filename;
+            link.download = filename;
+            link.click();
+          } else {
+            errorMsg.classList.remove("hidden");
+          }
+        })
+        .catch(() => errorMsg.classList.remove("hidden"));
+    }
+  </script>
+</body>
+</html>
